@@ -6,36 +6,60 @@
      
                           
    @section tst_rpz                     ME 405 Term Project Cover Page 
-                                        Our Term Project consists of hardware drivers, tasks for those drivers, vector <br>
-                                        and share files to transmit data, and a main file to tie all parts of the code together. <br> 
-                                        Attached you will see the associated Task Diagram, Finite State Machine Diagram, <br>
-                                        and Closed Loop Controller modelled in Simulink that show the design of our interacting files. <br>
+                                        This Documentation includes all necessary information and files for the Automatic Nerf Gun Project. <br>
        .
    @section abc_def                     Software Design 
-                                        Below you will find an outline ofthe softwasre design of the ME 405 autmatic nerf gun project. <br>
-                                        A task diagram including Thermal Camera, Yaw Control, Pitch Control, and  . <br> 
-                                        Attached you will see the associated Task Diagram, Finite State Machine Diagram, <br>
-                                        and Closed Loop Controller modelled in Simulink that show the design of our interacting files. <br>
+                                        Below you will find an outline ofthe software design of the ME 405 autmatic nerf gun project. <br>
+                                        A Task Diagram including Thermal Camera, Yaw Control, Pitch Control, and Gun Firing Actuation is included below. <br> 
+                                        Attached you will see the associated Finite State Machines. <br>
                                         
-    @section software_design    <br>         
-   The software design is detailed in the following subsection, task diagrams, and FSM's. <br>
+   @subsection abc_qwe                  Thermal Camera 
+                                        The thermal camera runs on i2C and produces a heatmap. <br>
    
-   @subsection thermal_camera_task      <br>
-   The Thermal Camera Subsection Task controls the calibraiton of the thermal camera.
+   @subsection abc_qle                  Yaw Control 
+                                        Yaw control through encoders and motors. <br>
    
-   @subsection yaw_control_task
+   @subsection abc_qii                  Pitch Control 
+                                        Pitch control through encoders and motors. <br>
    
-   @subsection pitch_control_task
-   
-   @section firing_actuation_task
-
-
-
-
-
-
-
+   @subsection abc_qpo                  Gun Actuation Control 
+                                        Gun Actuation control through encoders and motors. <br>
+           
+   @section fsm_tok     Task Diagrams and FSM's
+                        <br>
+                        Overall Task Diagram<br>
+                        @image html task_diagram.png
+                        <br>
+                        Thermal Camera FSM <br>
+                        \image html thermal_camera_FSM.png
+                        <br>
+                        Yaw Control FSM <br>
+                        \image html yaw_control_fsm.png
+                        <br>
+                        Pitch Control FSM <br>
+                        \image html pitch_control_fsm.png
+                        <br>
+                        Gun Actuation FSM <br>
+                        \image html fire_nerf_gun_fsm.png
+                        <br>
                         
+    @section fsm_ttk     Task Diagrams and FSM's
+                        <br>
+                        Overall Task Diagram<br>
+                        \image html task_diagram.png
+                        <br>
+                        Thermal Camera FSM <br>
+                        \image html thermal_camera_FSM.png
+                        <br>
+                        Yaw Control FSM <br>
+                        \image html yaw_control_fsm.png
+                        <br>
+                        Pitch Control FSM <br>
+                        \image html pitch_control_fsm.png
+                        <br>
+                        Gun Actuation FSM <br>
+                        \image html fire_nerf_gun_fsm.png
+                        <br>
                         
    @section fnl_www     Final Video
                         Video Link:
@@ -44,24 +68,11 @@
                         <iframe width="560" height="315" src="https://www.youtube.com/embed/7xuR2YwOMh8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         \endhtmlonly
                         <br>
-
-                        
-   @section fsm_ttk     FSMs and Task Diagrams
-                        <br>
-                        Overall Task Diagram<br>
-                        \image html TermProjectTaskUserPNG.PNG
-                        <br>
-                        User Task FSM <br>
-                        \image html TermProjectFSMPNG.PNG
-                        <br>
-                        Closed Loop Diagram <br>
-                        \image html TPClosedLoopControllerPNG.PNG
-                        <br>
                        
     
-   @author              Conor Fraser
+   @author              Adam Westfall, Jason Davis, Conor Fraser
 
    @copyright           License Info
 
-   @date                December 9, 2021
+   @date                February 28, 2022
 '''
