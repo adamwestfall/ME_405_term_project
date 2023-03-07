@@ -43,24 +43,6 @@
                         \image html fire_nerf_gun_fsm.png
                         <br>
                         
-    @section fsm_ttk     Task Diagrams and FSM's
-                        <br>
-                        Overall Task Diagram<br>
-                        \image html task_diagram.png
-                        <br>
-                        Thermal Camera FSM <br>
-                        \image html thermal_camera_FSM.png
-                        <br>
-                        Yaw Control FSM <br>
-                        \image html yaw_control_fsm.png
-                        <br>
-                        Pitch Control FSM <br>
-                        \image html pitch_control_fsm.png
-                        <br>
-                        Gun Actuation FSM <br>
-                        \image html fire_nerf_gun_fsm.png
-                        <br>
-                        
    @section fnl_www     Final Video
                         Video Link:
                         <br>
