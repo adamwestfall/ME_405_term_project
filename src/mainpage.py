@@ -28,7 +28,7 @@
    @section fsm_tok     Task Diagrams and FSM's
                         <br>
                         Overall Task Diagram<br>
-                        @image html task_diagram.png
+                        \image html task_diagram.png
                         <br>
                         Thermal Camera FSM <br>
                         \image html thermal_camera_FSM.png
