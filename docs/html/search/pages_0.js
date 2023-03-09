@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['me_20405_20term_20project_0',['ME 405 Term Project',['../index.html',1,'']]]
+  ['my_20project_0',['My Project',['../index.html',1,'']]]
 ];

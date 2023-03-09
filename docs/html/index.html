@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.6"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ME 405 Term Project: ME 405 Term Project</title>
+<title>My Project: My Project</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ME 405 Term Project
+   <div id="projectname">My Project
    </div>
   </td>
  </tr>
@@ -69,36 +69,64 @@ $(function() {
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">ME 405 Term Project </div></div>
+  <div class="headertitle"><div class="title">My Project </div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><h1><a class="anchor" id="tst_rpz"></a>
 ME 405 Term Project Cover Page</h1>
-<p>Our Term Project consists of hardware drivers, tasks for those drivers, vector <br  />
- and share files to transmit data, and a main file to tie all parts of the code together. <br  />
- Attached you will see the associated Task Diagram, Finite State Machine Diagram, <br  />
- and Closed Loop Controller modelled in Simulink that show the design of our interacting files. <br  />
+<p>This Documentation includes all necessary information and files for the Automatic Nerf Gun Project. <br  />
 </p>
 <h1><a class="anchor" id="abc_def"></a>
 Software Design</h1>
-<p>Below you will find an outline ofthe softwasre design of the ME 405 autmatic nerf gun project. <br  />
- A task diagram including Thermal Camera, Yaw Control, Pitch Control, and . <br  />
- Attached you will see the associated Task Diagram, Finite State Machine Diagram, <br  />
- and Closed Loop Controller modelled in Simulink that show the design of our interacting files. <br  />
+<p>Below you will find an outline ofthe software design of the ME 405 autmatic nerf gun project. <br  />
+ A Task Diagram including Thermal Camera, Yaw Control, Pitch Control, and Gun Firing Actuation is included below. <br  />
+ Attached you will see the associated Finite State Machines. <br  />
 </p>
-<h1><a class="anchor" id="software_design"></a>
-&lt;br&gt;         &lt;br&gt;</h1>
-<p>The software design is detailed in the following subsection, task diagrams, and FSM's. <br  />
+<h2><a class="anchor" id="abc_qwe"></a>
+Thermal Camera</h2>
+<p>The thermal camera runs on i2C and produces a heatmap. <br  />
 </p>
-<h2><a class="anchor" id="thermal_camera_task"></a>
-&lt;br&gt;</h2>
-<p>The Thermal Camera Subsection Task controls the calibraiton of the thermal camera.</p>
-<h2><a class="anchor" id="yaw_control_task"></a>
-yaw_control_task</h2>
-<h2><a class="anchor" id="pitch_control_task"></a>
-pitch_control_task</h2>
-<h1><a class="anchor" id="firing_actuation_task"></a>
-firing_actuation_task</h1>
+<h2><a class="anchor" id="abc_qle"></a>
+Yaw Control</h2>
+<p>Yaw control through encoders and motors. <br  />
+</p>
+<h2><a class="anchor" id="abc_qii"></a>
+Pitch Control</h2>
+<p>Pitch control through encoders and motors. <br  />
+</p>
+<h2><a class="anchor" id="abc_qpo"></a>
+Gun Actuation Control</h2>
+<p>Gun Actuation control through encoders and motors. <br  />
+</p>
+<h1><a class="anchor" id="fsm_tok"></a>
+Task Diagrams and FSM's</h1>
+<p><br  />
+ Overall Task Diagram<br  />
+ </p><div class="image">
+<img src="task_diagram.png" alt=""/>
+</div>
+<p> <br  />
+ Thermal Camera FSM <br  />
+ </p><div class="image">
+<img src="thermal_camera_FSM.png" alt=""/>
+</div>
+<p> <br  />
+ Yaw Control FSM <br  />
+ </p><div class="image">
+<img src="yaw_control_fsm.png" alt=""/>
+</div>
+<p> <br  />
+ Pitch Control FSM <br  />
+ </p><div class="image">
+<img src="pitch_control_fsm.png" alt=""/>
+</div>
+<p> <br  />
+ Gun Actuation FSM <br  />
+ </p><div class="image">
+<img src="fire_nerf_gun_fsm.png" alt=""/>
+</div>
+<p> <br  />
+</p>
 <h1><a class="anchor" id="fnl_www"></a>
 Final Video</h1>
 <p>Video Link: <br  />
@@ -106,28 +134,9 @@ Final Video</h1>
                         <iframe width="560" height="315" src="https://www.youtube.com/embed/7xuR2YwOMh8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                          <br  />
 </p>
-<h1><a class="anchor" id="fsm_ttk"></a>
-FSMs and Task Diagrams</h1>
-<p><br  />
- Overall Task Diagram<br  />
- </p><div class="image">
-<img src="TermProjectTaskUserPNG.PNG" alt=""/>
-</div>
-<p> <br  />
- User Task FSM <br  />
- </p><div class="image">
-<img src="TermProjectFSMPNG.PNG" alt=""/>
-</div>
-<p> <br  />
- Closed Loop Diagram <br  />
- </p><div class="image">
-<img src="TPClosedLoopControllerPNG.PNG" alt=""/>
-</div>
-<p> <br  />
-</p>
-<dl class="section author"><dt>Author</dt><dd>Conor Fraser</dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Adam Westfall, Jason Davis, Conor Fraser</dd></dl>
 <dl class="section copyright"><dt>Copyright</dt><dd>License Info</dd></dl>
-<dl class="section date"><dt>Date</dt><dd>December 9, 2021 </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>February 28, 2022 </dd></dl>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 <!-- start footer part -->
