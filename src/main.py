@@ -21,9 +21,11 @@ TODO:
 """
 
 import gc
+import math
 import pyb
 import cotask
-import task_share, encoder, motor_driver, closed_loop_controller, utime
+import task_share, encoder, motor_driver, closed_loop_controller, utime, mlx_cam
+
 
 def task1_start_button(shares):
     """!
@@ -58,17 +60,26 @@ def task1_start_button(shares):
 def task2_thermal_camera(shares):
     """!
     Task that sets up and gets images from the thermal camera. This is kind of the brains of this code.
+    This task assumes the camera is on the 1st I2C bus.
     TODO:
         * set up the thermal camera as an I2c device
         * change from psuedo code
+        * update this to be handled in an external file
+        * look into how frequency will affect the waiting time
     """
     start, yaw_angle = shares
     state = 0
     while True:
         if state == 0:
             # initial state: setting up the camera as an I2C device and ensuring it is connected
-            # need to copy code from the example that ridgeley provided
+            # the following code was take directly from Dr. Ridgleys mlx_cam.py
+            # Select MLX90640 camera I2C address, normally 0x33, and check the bus
+            i2c_bus = pyb.I2C(1)
+
+            # Create the camera object and set it up in default mode
+            camera = mlx_cam.MLX_Cam(i2c_bus)
             state = 1
+
         elif state == 1:
             # wait for start: wait for start to be true
             if start.get() == True:
@@ -76,28 +87,69 @@ def task2_thermal_camera(shares):
 
         elif state == 2:
             # wait: this state waits for 5 seconds for the duel to actually start
-            # TODO: decide if this state should be cooperative or kind of block
-            #           * might be okay to block
+            # this is attempting to be somewhat cooperative and not completely blocking
+            total_time = 5 # seconds
+            wait_time = .1 # seconds
+
+            i = total_time/wait_time 
+            while i > 0:
+                utime.sleep(.1)
+                i -= 1
+                yield
             state = 3
+
         elif state == 3:
             # get image: get the image from the thermal camera
-            # want this to be the integer values in a csv format
+            image = camera.get_image()
+            pix_array = camera.get_array(image.buf)
+            
             state = 4
-        elif state == 4:
-            # check image: check that the image recieved is valid
-            # TODO: make sure this is necessary
 
-            state = 5
-        elif state == 5:
-            # get output vector: get the angle for the yaw to move and set the done var
+        elif state == 4:
+            # get output vector: get the angle for the yaw to move
             # TODO: 
-            #       * blob detection algorithm
+            #       * check what threshhold should be
             #       * convert x coord to an angle
+            #           * figure out distance from camera to edge of table
+            #           * figure out field of view
+            
+            # finding approx x location of the brightest pixels
+            # reshape to 2-D list
+            img = [pix_array[i:i+camera._width] for i in range(0, len(pix_array), camera._width)]  
+            threshold = 100  # adjust as needed
+            # apply threshold
+            binary_img = [[1 if pixel > threshold else 0 for pixel in row] for row in img] 
+            # find center of mass
+            total_mass = 0
+            center_mass = 0
+            for y, row in enumerate(binary_img):
+                mass = sum(row)
+                total_mass += mass
+                center_mass += y * mass
+            if total_mass > 0:
+                center_y = center_mass / total_mass
+            else:
+                center_y = None
+            
+            # all real world distances needed
+            Field_x_len = 24 # distance of the camera field of view at the table edge in inches
+            dist_from_pivot = 2 # distance from pivot value in inches
+            
+            # converting from an x index to the inches value
+            x_dist = center_y * (Field_x_len/camera._width)
+
+            # solving for the distance from the centerline of the person
+            x = (Field_x_len/2) - x_dist
+
+            # getting the angle
+            if x > 0:
+                angle = math.atan(x/dist_from_pivot)
+            elif x < 0:
+                angle = -math.atan(abs(x)/dist_from_pivot)
             
             # not sure if we need this but could be good to check the angle
-            if angle is good:
-                yaw_angle.put(angle)
-                state = 1
+            yaw_angle.put(angle)
+            state = 1
 
         yield
 
@@ -214,6 +266,7 @@ def task4_yaw_control(shares):
             if abs(duty) > small_duty:
                 motor_2.set_duty(duty) 
             else:
+                encoder_B.zero()
                 state = 3
         
         elif state == 3:
@@ -224,6 +277,8 @@ def task4_yaw_control(shares):
 
         elif state == 4:
             # move to angle: once an angle is recieved move to the angle
+            # TODO:
+            #     * make sure the motor is moving in the correct direction
             
             deg_2_encoder = 20 # need to find this value   
             setpoint = angle*deg_2_encoder # need to figure out this value
@@ -250,7 +305,7 @@ def task5_nerf_gun(shares):
         * correct the pin locations
 
     """
-    pitch_done_share, yaw_done_share = shares
+    start_share, pitch_done_share, yaw_done_share = shares
     state = 0
     while True:
         if state == 0:
@@ -265,19 +320,25 @@ def task5_nerf_gun(shares):
             state = 1
 
         elif state == 1:
+            # wait for start: wait for start to be true
+            start = start_share.get()
+            if start == True:
+                motor_pin.high()
+                state = 2
+        
+        elif state == 2:
             # wait for motion: state that waits for other motion to finish to fire
             pitch_done = pitch_done_share.get()
             yaw_done = yaw_done_share.get()
             if pitch_done & yaw_done:
-                state = 2
+                state = 3
         
-        elif state == 2:
+        elif state == 3:
             # firing sequence: sequence of spinning the motors and then firing a dart with the plunger
+            # TODO: 
+            #       * figure out if this is how this works
             num_to_fire = 2
             for i in range(num_to_fire):
-                motor_pin.high()
-                #kinda arbitrary time at the moment
-                utime.sleep(.05)
                 plunger_pin.high()
                 #kinda arbitrary time at the moment
                 # not sure if this is how the plunger needs to work
@@ -321,7 +382,7 @@ if __name__ == "__main__":
     task4 = cotask.Task(task4_yaw_control, name="Yaw Control", priority=4, period=35,
                          profile=True, trace=False, shares=(start,yaw_angle,yaw_done))
     task5 = cotask.Task(task5_nerf_gun, name="Fire Nerf Gun", priority=5, period=35,
-                         profile=True, trace=False, shares=(pitch_done,yaw_done))
+                         profile=True, trace=False, shares=(start,pitch_done,yaw_done))
     
     cotask.task_list.append(task1)
     cotask.task_list.append(task2)

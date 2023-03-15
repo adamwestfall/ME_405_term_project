@@ -15,6 +15,9 @@ example.
 
 @author mwerezak Original files, Summer 2022
 @author JR Ridgely Added simplified wrapper class @c MLX_Cam, January 2023
+@author                     Jason Davis 
+@author                     Conor Fraser
+@author                     Adam Westfall
 @copyright (c) 2022 by the authors and released under the GNU Public License,
     version 3.
 """
@@ -24,6 +27,7 @@ from machine import Pin, I2C
 from mlx90640 import MLX90640
 from mlx90640.calibration import NUM_ROWS, NUM_COLS, IMAGE_SIZE, TEMP_K
 from mlx90640.image import ChessPattern, InterleavedPattern
+import array
 
 
 class MLX_Cam:
@@ -64,7 +68,7 @@ class MLX_Cam:
         self._image = self._camera.image
 
 
-    def ascii_image(self, array, pixel="██", textcolor="0;180;0"):
+    def ascii_image(self,in_array, pixel="██", textcolor="0;180;0"):
         """!
         @brief   Show low-resolution camera data as shaded pixels on a text
                  screen.
@@ -88,7 +92,7 @@ class MLX_Cam:
                  After the printing is done, character color is reset to a
                  default of medium-brightness green, or something else if
                  chosen.
-        @param   array An array of (self._width * self._height) pixel values
+        @param  in_array An array of (self._width * self._height) pixel values
         @param   pixel Text which is shown for each pixel, default being a pair
                  of extended-ASCII blocks (code 219)
         @param   textcolor The color to which printed text is reset when the
@@ -96,11 +100,11 @@ class MLX_Cam:
                  letter representing the intensity of red, green, and blue from
                  0 to 255
         """
-        minny = min(array)
-        scale = 255.0 / (max(array) - minny)
+        minny = min(in_array)
+        scale = 255.0 / (max(in_array) - minny)
         for row in range(self._height):
             for col in range(self._width):
-                pix = int((array[row * self._width + (self._width - col - 1)]
+                pix = int((in_array[row * self._width + (self._width - col - 1)]
                            - minny) * scale)
                 print(f"\033[38;2;{pix};{pix};{pix}m{pixel}", end='')
             print(f"\033[38;2;{textcolor}m")
@@ -110,20 +114,20 @@ class MLX_Cam:
     asc = " -.:=+*#%@"
 
 
-    def ascii_art(self, array):
+    def ascii_art(self,in_array):
         """!
         @brief   Show a data array from the IR image as ASCII art.
         @details Each character is repeated twice so the image isn't squished
                  laterally. A code of "><" indicates an error, probably caused
                  by a bad pixel in the camera. 
-        @param   array The array to be shown, probably @c image.v_ir
+        @param  in_array The array to be shown, probably @c image.v_ir
         """
-        scale = 10 / (max(array) - min(array))
-        offset = -min(array)
+        scale = 10 / (max(in_array) - min(in_array))
+        offset = -min(in_array)
         for row in range(self._height):
             line = ""
             for col in range(self._width):
-                pix = int((array[row * self._width + (self._width - col - 1)]
+                pix = int((in_array[row * self._width + (self._width - col - 1)]
                            + offset) * scale)
                 try:
                     the_char = MLX_Cam.asc[pix]
@@ -134,26 +138,26 @@ class MLX_Cam:
         return
 
 
-    def get_csv(self, array, limits=None):
+    def get_csv(self,in_array, limits=None):
         """!
         @brief   Generate a string containing image data in CSV format.
         @details This function generates a set of lines, each having one row of
                  image data in Comma Separated Variable format. The lines can
                  be printed or saved to a file using a @c for loop.
-        @param   array The array of data to be presented
+        @param  in_array The array of data to be presented
         @param   limits A 2-iterable containing the maximum and minimum values
                  to which the data should be scaled, or @c None for no scaling
         """
         if limits and len(limits) == 2:
-            scale = (limits[1] - limits[0]) / (max(array) - min(array))
-            offset = limits[0] - min(array)
+            scale = (limits[1] - limits[0]) / (max(in_array) - min(in_array))
+            offset = limits[0] - min(in_array)
         else:
             offset = 0.0
             scale = 1.0
         for row in range(self._height):
             line = ""
             for col in range(self._width):
-                pix = int((array[row * self._width + (self._width - col - 1)]
+                pix = int((in_array[row * self._width + (self._width - col - 1)]
                           * scale) + offset)
                 if col:
                     line += ","
@@ -181,7 +185,44 @@ class MLX_Cam:
             image = self._camera.process_image(subpage, state)
 
         return image
+    
+    def get_array(self,in_array):
+        """!
+        @breif Show camera image as an array of values from 0 to 255
 
+        """
+        minny = min(in_array)
+        scale = 255.0 / (max(in_array) - minny)
+        pix_array = array.array('B')
+        for row in range(self._height):
+            for col in range(self._width):
+                pix = int((in_array[row * self._width + (self._width - col - 1)]
+                        - minny) * scale)
+                pix_array.append(pix)
+       
+        return pix_array
+                
+def dfs(i, data):
+    """
+    Perform depth-first search to find a blob starting from the given index i in the data array.
+    """
+    if i < 0 or i >= len(data):
+        return []
+    if data[i] == 0:
+        return []
+    blob = []
+    stack = [i]
+    while stack:
+        i = stack.pop()
+        if i < 0 or i >= len(data):
+            continue
+        if data[i] == 0:
+            continue
+        data[i] = 0
+        blob.append(i)
+        stack.append(i + 1)
+        stack.append(i - 1)
+    return blob
 
 # The test code sets up the sensor, then grabs and shows an image in a terminal
 # every ten and a half seconds or so.
@@ -212,6 +253,7 @@ if __name__ == "__main__":
     # Create the camera object and set it up in default mode
     camera = MLX_Cam(i2c_bus)
 
+    
     while True:
         try:
             # Get and image and see how long it takes to grab that image
@@ -224,15 +266,57 @@ if __name__ == "__main__":
             # Display pixellated grayscale or numbers in CSV format; the CSV
             # could also be written to a file. Spreadsheets, Matlab(tm), or
             # CPython can read CSV and make a decent false-color heat plot.
-            show_image = True
+            show_image = False
             show_csv = False
+            show_array = True
             if show_image:
                 camera.ascii_image(image.buf)
             elif show_csv:
                 for line in camera.get_csv(image.v_ir, limits=(0, 99)):
                     print(line)
+            elif show_array:
+                pix_array = camera.get_array(image.buf)
+                print(pix_array)
+                img = [pix_array[i:i+camera._width] for i in range(0, len(pix_array), camera._width)]  # reshape to 2-D list
+                threshold = 100  # adjust as needed
+                binary_img = [[1 if pixel > threshold else 0 for pixel in row] for row in img]  # apply threshold
+                # find center of mass
+                total_mass = 0
+                center_mass = 0
+                for y, row in enumerate(binary_img):
+                    mass = sum(row)
+                    total_mass += mass
+                    center_mass += y * mass
+                if total_mass > 0:
+                    center_y = center_mass / total_mass
+                else:
+                    center_y = None
+                
+                print(center_y)
+                # blobs = []
+                # for i in range(camera._height):
+                #     for j in range(camera._width):
+                #         idx = i * camera._width + j
+                #         if pix_array[idx] > 0:
+                #             # Found an unvisited pixel with non-zero value, start new blob
+                #             blob = []
+                #             dfs(i, j)
+                #             blobs.append(blob)
+
+                # # Step 4: Sort blobs in descending order of total brightness
+                # blobs = sorted(blobs, key=lambda b: sum(pix_array[i*camera._width + j] for i, j in b), reverse=True)
+
+                # # Step 5: Identify largest blob
+                # largest_blob = blobs[0]
+
+                # # Step 6: Calculate center of largest blob
+                # x_center = sum(p[0] for p in largest_blob) / len(largest_blob)
+                # y_center = sum(p[1] for p in largest_blob) / len(largest_blob)
+                # print(x_center)
+                # print(y_center)
             else:
-                camera.ascii_art(image.v_ir)
+                #camera.ascii_art(image.v_ir)
+                print(image.v_ir)
             time.sleep_ms(10000)
 
         except KeyboardInterrupt:
