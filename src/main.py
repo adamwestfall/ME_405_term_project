@@ -1,7 +1,8 @@
 """!
 @file main.py
     This file contains code to run the ME405 term project. A nerf gun is controled by a thermal camera
-    to fire at a hot region.
+    to fire at a hot region 2 times. Note: portions of this project have not been tested and are 
+    based on the code of previous projects and intuition.
 
     
 
@@ -12,10 +13,6 @@
 @author Conor Fraser
 @copyright                          Creative Commons CC BY: Please visit https://creativecommons.org/licenses/by/4.0/ to learn more
 @date                               March 1, 2023
-
-TODO:
-    * check that the logic of putting True and False in shares that expect an 8bit number is valid
-    * see if we need to be checking for very small duty cycles to be done or just use a duty cycle of 0
 
 
 """
@@ -30,26 +27,30 @@ import task_share, encoder, motor_driver, closed_loop_controller, utime, mlx_cam
 def task1_start_button(shares):
     """!
     Checks the state of the button and acts if the button is pressed for a sufficient amount of time
-
+    @param shares A list holding the shares used for this task
 
     """
     state = 0
     while True:
         if state == 0:
             # initial state setting up the pin to check for the signal
-            
-            
+            # unsure where this pin is actually plugged in but designing it to not interfere with other pins
+            # thinking this is a digital input so should be fine on this pin if not this will need to be changed
+            start_pin = pyb.Pin(pyb.Pin.cpu.A5, pyb.Pin.IN)
+            start = False
             
             state = 1
 
         elif state == 1:
             # Check for Start: check if the button is pressed for a sufficient amount of time
            
-            # right now this is sudo code
-            if button_press == True:
-                # wait for 1 second
-                # check if button press is still true
-                state = 2
+            # assuming a logic high will be a press of the button
+            if start_pin.value() == True:
+                # wait for 1 second to get rid of bouncing
+                utime.sleep(1)
+                # check that the pin is still high
+                if start_pin.value() == True:
+                    state = 2
         elif state == 2:
             # Start: this will set the start variable 
             start = True
@@ -60,12 +61,8 @@ def task1_start_button(shares):
 def task2_thermal_camera(shares):
     """!
     Task that sets up and gets images from the thermal camera. This is kind of the brains of this code.
-    This task assumes the camera is on the 1st I2C bus.
-    TODO:
-        * set up the thermal camera as an I2c device
-        * change from psuedo code
-        * update this to be handled in an external file
-        * look into how frequency will affect the waiting time
+    This task assumes the camera is on the 1st I2C bus. This code has been tested externally in the edits made to mlx_cam.py in the main.
+    @param shares A list holding the shares used for this task
     """
     start, yaw_angle = shares
     state = 0
@@ -87,7 +84,7 @@ def task2_thermal_camera(shares):
 
         elif state == 2:
             # wait: this state waits for 5 seconds for the duel to actually start
-            # this is attempting to be somewhat cooperative and not completely blocking
+            # this is attempting to be somewhat cooperative and not completely blocking may need some adjustment
             total_time = 5 # seconds
             wait_time = .1 # seconds
 
@@ -107,16 +104,11 @@ def task2_thermal_camera(shares):
 
         elif state == 4:
             # get output vector: get the angle for the yaw to move
-            # TODO: 
-            #       * check what threshhold should be
-            #       * convert x coord to an angle
-            #           * figure out distance from camera to edge of table
-            #           * figure out field of view
             
             # finding approx x location of the brightest pixels
             # reshape to 2-D list
             img = [pix_array[i:i+camera._width] for i in range(0, len(pix_array), camera._width)]  
-            threshold = 100  # adjust as needed
+            threshold = 75  # adjust as needed we were unable to test this fully but this value was working woutside of the full assembly
             # apply threshold
             binary_img = [[1 if pixel > threshold else 0 for pixel in row] for row in img] 
             # find center of mass
@@ -131,7 +123,7 @@ def task2_thermal_camera(shares):
             else:
                 center_y = None
             
-            # all real world distances needed
+            # all real world distances needed these were never measured as the full assembly was unable to be put together
             Field_x_len = 24 # distance of the camera field of view at the table edge in inches
             dist_from_pivot = 2 # distance from pivot value in inches
             
@@ -155,17 +147,15 @@ def task2_thermal_camera(shares):
 
 def task3_pitch_control(shares):
     """!
-    Task that runs another motor driver and dumps the data to the terminal 
-    TODO:
-        * ensure the correct pins are being used
-        * figure out the values needed for state 2
+    Task that runs the pitch control of the gun. Tuning is needed for this to run correctly. 
+    @param shares A list holding the shares used for this task
     """
     start_share, pitch_done_share = shares
     state = 0
     while True:
         if state == 0:
             # initial state setting up the motor, encoder, and controller
-            # TODO: Check all of the pins not sure if these are the correct ones
+            # pins were assumed based on the pins used for previous labs 
             enable2 = pyb.Pin(pyb.Pin.cpu.C1, pyb.Pin.OUT_PP)
             input3 = pyb.Pin.cpu.A0
             input4 = pyb.Pin.cpu.A1
@@ -205,6 +195,7 @@ def task3_pitch_control(shares):
             duty = controller2.run(current_pos)
             motor_2.set_duty(duty)
             # check that the duty cycle is very small so it is almost done
+            # might be able to just check zero but this is here just in case
             if abs(duty) < 0.001:
                 pitch_done_share.put(True)
 
@@ -212,10 +203,8 @@ def task3_pitch_control(shares):
 
 def task4_yaw_control(shares):
     """!
-    Task that starts the encoder and dumps the data to the terminal
-    TODO:
-        * ensure the correct pins are being used
-        * figure out the values needed for state 2
+    Task that runs the yaw control of the nerf turret. Tuning is needed for this to run correctly.
+    @param shares A list holding the shares used for this task
 
     """
     start_share, yaw_angle_share, yaw_done_share = shares
@@ -223,19 +212,19 @@ def task4_yaw_control(shares):
     while True:
         if state == 0:
             # initial state setting up the motor, encoder, and controller
-            # TODO: Check all of the pins not sure if these are the correct ones
-            enable2 = pyb.Pin(pyb.Pin.cpu.C1, pyb.Pin.OUT_PP)
-            input3 = pyb.Pin.cpu.A0
-            input4 = pyb.Pin.cpu.A1
-            timer2 = pyb.Timer(5, freq=20000)
+            # pins were assumed based on the pins used for previous labs 
+            enable1 = pyb.Pin(pyb.Pin.cpu.A10, pyb.Pin.OUT_PP)
+            input1 = pyb.Pin.cpu.B4
+            input2 = pyb.Pin.cpu.B5
+            timer1 = pyb.Timer(3, freq=20000)
 
             # creating motor
-            motor_2_driver = motor_driver.MotorDriver(enable2, input3, input4, timer2)
-            motor_2 = motor_2_driver.motor(input3, input4, 1, 2, "MOTOR B")
+            motor_2_driver = motor_driver.MotorDriver(enable1, input1, input2, timer1)
+            motor_2 = motor_2_driver.motor(input1, input2, 1, 2, "MOTOR B")
             motor_2_driver.enable()
             
             # creating encoder
-            encoder_B = encoder.Encoder(pyb.Pin.cpu.C6, pyb.Pin.cpu.C7, 8, ID="ENCODER A")
+            encoder_B = encoder.Encoder(pyb.Pin.cpu.B6, pyb.Pin.cpu.B7, 8, ID="ENCODER A")
             encoder_B.zero()
 
             # creating controller
@@ -263,6 +252,8 @@ def task4_yaw_control(shares):
             encoder_B.update()
             current_pos = encoder_B.read()    
             duty = controller2.run(current_pos)
+            # check that the duty cycle is very small so it is basically done
+            # might be able to just check zero but this is here just in case
             if abs(duty) > small_duty:
                 motor_2.set_duty(duty) 
             else:
@@ -277,11 +268,9 @@ def task4_yaw_control(shares):
 
         elif state == 4:
             # move to angle: once an angle is recieved move to the angle
-            # TODO:
-            #     * make sure the motor is moving in the correct direction
             
             deg_2_encoder = 20 # need to find this value   
-            setpoint = angle*deg_2_encoder # need to figure out this value
+            setpoint = angle*deg_2_encoder 
             Kp = 0.06        # might need to tune this
             controller2.set_setpoint(setpoint)
             controller2.set_kp(Kp) 
@@ -290,31 +279,26 @@ def task4_yaw_control(shares):
             duty = controller2.run(current_pos)
             motor_2.set_duty(duty) 
             # check that the duty cycle is very small so it is basically done
+            # might be able to just check zero but this is here just in case
             small_duty = 0.005 
             if abs(duty) < small_duty:
                 yaw_done_share.put(True)
-            
-        
-
+                
         yield
 
 def task5_nerf_gun(shares):
     """!
-    Task that runs the firing sequence of the motor 
-    TODO: 
-        * correct the pin locations
-
+    Task that runs the firing sequence of the nerf gun motors
+    @param shares A list holding the shares used for this task
     """
     start_share, pitch_done_share, yaw_done_share = shares
     state = 0
     while True:
         if state == 0:
             # initial state: setting up the output pins and initializing them to low
-            # pin for rotating motors for firing
-            # correct pin
+            # pin for rotating motors for firing assuming digital output
             motor_pin = pyb.Pin(pyb.Pin.cpu.A10, pyb.Pin.OUT_PP)
-            # pin for plunger
-            # correct the pin
+            # pin for plunger assuming digital output 
             plunger_pin = pyb.Pin(pyb.Pin.cpu.A10, pyb.Pin.OUT_PP)
             
             state = 1
@@ -323,6 +307,7 @@ def task5_nerf_gun(shares):
             # wait for start: wait for start to be true
             start = start_share.get()
             if start == True:
+                # getting the motors spinning to be ready quickly
                 motor_pin.high()
                 state = 2
         
@@ -335,14 +320,12 @@ def task5_nerf_gun(shares):
         
         elif state == 3:
             # firing sequence: sequence of spinning the motors and then firing a dart with the plunger
-            # TODO: 
-            #       * figure out if this is how this works
             num_to_fire = 2
             for i in range(num_to_fire):
                 plunger_pin.high()
-                #kinda arbitrary time at the moment
+                # kinda arbitrary time at the moment needs testing
                 # not sure if this is how the plunger needs to work
-                utime.sleep(.2)
+                utime.sleep(1)
                 plunger_pin.low()
             motor_pin.low()
 
@@ -353,7 +336,7 @@ def task5_nerf_gun(shares):
 if __name__ == "__main__":
     """
     TODO:
-        * fix priority and period for all of the tasks
+        * fix period for all of the tasks
 
     
     """
@@ -375,13 +358,13 @@ if __name__ == "__main__":
     
     task1 = cotask.Task(task1_start_button, name="Start Button", priority=1, period=100,
                         profile=True, trace=False, shares=(start))
-    task2 = cotask.Task(task2_thermal_camera, name="Thermal Camera", priority=2, period=35,
+    task2 = cotask.Task(task2_thermal_camera, name="Thermal Camera", priority=2, period=100,
                          profile=True, trace=False, shares=(start,yaw_angle))
-    task3 = cotask.Task(task3_pitch_control, name="Pitch Control", priority=3, period=35,
+    task3 = cotask.Task(task3_pitch_control, name="Pitch Control", priority=3, period=100,
                          profile=True, trace=False, shares=(start,pitch_done))
-    task4 = cotask.Task(task4_yaw_control, name="Yaw Control", priority=4, period=35,
+    task4 = cotask.Task(task4_yaw_control, name="Yaw Control", priority=4, period=100,
                          profile=True, trace=False, shares=(start,yaw_angle,yaw_done))
-    task5 = cotask.Task(task5_nerf_gun, name="Fire Nerf Gun", priority=5, period=35,
+    task5 = cotask.Task(task5_nerf_gun, name="Fire Nerf Gun", priority=5, period=100,
                          profile=True, trace=False, shares=(start,pitch_done,yaw_done))
     
     cotask.task_list.append(task1)
