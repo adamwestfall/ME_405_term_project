@@ -188,7 +188,8 @@ class MLX_Cam:
     
     def get_array(self,in_array):
         """!
-        @breif Show camera image as an array of values from 0 to 255
+        @brief    Show camera image as an array of values from 0 to 255
+        @return   Returns an array of pixels from 0 to 255
 
         """
         minny = min(in_array)
@@ -203,9 +204,13 @@ class MLX_Cam:
         return pix_array
                 
 def dfs(i, data):
-    """
-    Perform depth-first search to find a blob starting from the given index i in the data array.
-    """
+    '''!  @brief                              Finds the location of the hottest spot.
+       @details                               Perform depth-first search to find a blob starting from the given index i in the data array.
+       @param i                               Index for checking through data.
+       @param data                            The outputted pixel data from the thermal camera.
+       @return                                Returns the location of the heat blob as an array.
+    '''
+   
     if i < 0 or i >= len(data):
         return []
     if data[i] == 0:

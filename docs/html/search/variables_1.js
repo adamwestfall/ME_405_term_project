@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['name_0',['name',['../classcotask_1_1_task.html#ab54e069dd0b4f0a2f8e7f00c94998a10',1,'cotask::Task']]]
+  ['asc_0',['asc',['../classmlx__cam_1_1_m_l_x___cam.html#ab54cab49d3896537eec5516972c90804',1,'mlx_cam::MLX_Cam']]]
 ];

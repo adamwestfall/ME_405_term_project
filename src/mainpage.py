@@ -28,20 +28,24 @@
    @section fsm_tok     Task Diagrams and FSM's
                         <br>
                         Overall Task Diagram<br>
-                        \image html task_diagram.png
+                        \image html task_diagram_task_diagram.png
                         <br>
                         Thermal Camera FSM <br>
-                        \image html thermal_camera_FSM.png
+                        \image html task_diagram_thermal_camera.png
                         <br>
                         Yaw Control FSM <br>
-                        \image html yaw_control_fsm.png
+                        \image html task_diagram_yaw_control.png
                         <br>
                         Pitch Control FSM <br>
-                        \image html pitch_control_fsm.png
+                        \image html task_diagram_pitch_control.png
                         <br>
                         Gun Actuation FSM <br>
-                        \image html fire_nerf_gun_fsm.png
+                        \image html task_diagram_fire_nerf_gun.png
                         <br>
+                        Start Button FSM <br>
+                        \image html task_diagram_start_button.png
+                        <br>
+                        
                         
    @section fnl_www     Final Video
                         Video Link:

@@ -1,3 +1,19 @@
+'''   @file                            main.py
+   @brief                              Main file to run the ME 405 Autmatic Nerf Gun Term Project.
+   @details                            A DC motor and encoder actuated nerf gun is controled by a thermal camera to automatically fire at targets.
+                                       Note: Portions of this project have not been tested due to health concerns.
+                                       Contains a task1_start_button method to instantiate a pin for the start button. 
+                                       Contains a task2_thermal_camera method which includes the states and necessary implementation to retrieve and analyze camera image data.
+                                       Contains a task3_pitch_control method to interact with the pitch motors.
+                                       Contains a task4_yaw_control method to interact with the yaw motors.
+                                       Contains a task5_nerf_gun method which actuates the nerf firing system.
+   @author                             Jason Davis
+   @author                             Adam Westfall
+   @author                             Conor Fraser
+   @copyright                          Creative Commons CC BY: Please visit https://creativecommons.org/licenses/by/4.0/ to learn more
+   @date                               March 1, 2023
+'''
+
 """!
 @file main.py
     This file contains code to run the ME405 term project. A nerf gun is controled by a thermal camera
@@ -25,11 +41,12 @@ import task_share, encoder, motor_driver, closed_loop_controller, utime, mlx_cam
 
 
 def task1_start_button(shares):
-    """!
-    Checks the state of the button and acts if the button is pressed for a sufficient amount of time
-    @param shares A list holding the shares used for this task
+    '''!  @brief                              Controls the start button functionality.
+       @details                               Instantiates the pins required for the start button. 
+                                              Checks that the button has been pressed for an adequate amount of time to prevent false positive readings.
+       @param shares                          A list holding the shares used for this task.
+    '''
 
-    """
     state = 0
     while True:
         if state == 0:
@@ -59,11 +76,14 @@ def task1_start_button(shares):
         yield
 
 def task2_thermal_camera(shares):
-    """!
-    Task that sets up and gets images from the thermal camera. This is kind of the brains of this code.
-    This task assumes the camera is on the 1st I2C bus. This code has been tested externally in the edits made to mlx_cam.py in the main.
-    @param shares A list holding the shares used for this task
-    """
+    '''!  @brief                              Controls the thermal camera functionality.
+       @details                               Instantiates the requirements for I2C communication with the camera.
+                                              Grabs the heatmap image from the thermal camera after a 5 second delay.
+                                              Filters the image, identifies the center of the hotspot and extropolates this into a physical location.
+                                              This code has been tested externally in the edits made to mlx_cam.py in the main.
+       @param shares                          A list holding the shares used for this task.
+    '''
+    
     start, yaw_angle = shares
     state = 0
     while True:
@@ -146,10 +166,13 @@ def task2_thermal_camera(shares):
         yield
 
 def task3_pitch_control(shares):
-    """!
-    Task that runs the pitch control of the gun. Tuning is needed for this to run correctly. 
-    @param shares A list holding the shares used for this task
-    """
+    '''!  @brief                              Controls the pitch DC motors functionality.
+       @details                               Instantiates the necessary pins to interact with the pitch motors.
+                                              Establishes a start position for the nerf gun.
+                                              Utilizes the encoder, motor_driver, and closed_loop_controller files.
+       @param shares                          A list holding the shares used for this task.
+    '''
+    
     start_share, pitch_done_share = shares
     state = 0
     while True:
@@ -202,11 +225,14 @@ def task3_pitch_control(shares):
         yield
 
 def task4_yaw_control(shares):
-    """!
-    Task that runs the yaw control of the nerf turret. Tuning is needed for this to run correctly.
-    @param shares A list holding the shares used for this task
+    '''!  @brief                              Controls the yaw DC motors functionality.
+       @details                               Instantiates the necessary pins to interact with the yaw motors.
+                                              Establishes a start position for the nerf gun.
+                                              Utilizes the encoder, motor_driver, and closed_loop_controller files.
+                                              The position of the target from the thermal camera is used to locate the gun in the yaw direction.
+       @param shares                          A list holding the shares used for this task.
+    '''
 
-    """
     start_share, yaw_angle_share, yaw_done_share = shares
     state = 0
     while True:
@@ -287,10 +313,14 @@ def task4_yaw_control(shares):
         yield
 
 def task5_nerf_gun(shares):
-    """!
-    Task that runs the firing sequence of the nerf gun motors
-    @param shares A list holding the shares used for this task
-    """
+    '''!  @brief                              Controls the gun firing sequence.
+       @details                               Instantiates the necessary pins to interact with the firing motors.
+                                              Utilizes the data in shares that establishes yaw and pitch positions to confirm that the target is in the crosshairs.
+                                              Establishes logic to fire when aimed at the target.
+       @param shares                          A list holding the shares used for this task.
+    '''
+    
+  
     start_share, pitch_done_share, yaw_done_share = shares
     state = 0
     while True:

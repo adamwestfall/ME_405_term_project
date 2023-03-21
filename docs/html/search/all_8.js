@@ -1,9 +1,12 @@
 var searchData=
 [
-  ['mainpage_2epy_0',['mainpage.py',['../mainpage_8py.html',1,'']]],
-  ['motor_1',['motor',['../classmotor__driver_1_1_motor_driver.html#a4ce633887b9988f35aae5a68462eda65',1,'motor_driver::MotorDriver']]],
-  ['motor_2',['Motor',['../classmotor__driver_1_1_motor.html',1,'motor_driver']]],
-  ['motor_5fdriver_3',['motor_driver',['../namespacemotor__driver.html',1,'']]],
-  ['motordriver_4',['MotorDriver',['../classmotor__driver_1_1_motor_driver.html',1,'motor_driver']]],
-  ['my_20project_5',['My Project',['../index.html',1,'']]]
+  ['main_0',['main',['../namespacemain.html',1,'']]],
+  ['mainpage_2epy_1',['mainpage.py',['../mainpage_8py.html',1,'']]],
+  ['me_20405_20term_20project_2',['ME 405 Term Project',['../index.html',1,'']]],
+  ['mlx_5fcam_3',['MLX_Cam',['../classmlx__cam_1_1_m_l_x___cam.html',1,'mlx_cam']]],
+  ['mlx_5fcam_2epy_4',['mlx_cam.py',['../mlx__cam_8py.html',1,'']]],
+  ['motor_5',['motor',['../classmotor__driver_1_1_motor_driver.html#a4ce633887b9988f35aae5a68462eda65',1,'motor_driver::MotorDriver']]],
+  ['motor_6',['Motor',['../classmotor__driver_1_1_motor.html',1,'motor_driver']]],
+  ['motor_5fdriver_7',['motor_driver',['../namespacemotor__driver.html',1,'']]],
+  ['motordriver_8',['MotorDriver',['../classmotor__driver_1_1_motor_driver.html',1,'motor_driver']]]
 ];
