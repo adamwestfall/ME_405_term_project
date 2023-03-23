@@ -49,6 +49,7 @@ Parts List:
 8.	Lazy Susan Turn Table
 9.	Baseplate
 10.	A-Frame Support
+11.   Underside Electronics
 
 
 The Electronically Actuated Dart Gun uses a design similar to a baseball pitching machine.
@@ -86,19 +87,27 @@ To prevent the overuse of the emergency stop button, a black start/stop/reset bu
 Indicator LED's on the control panel allow a user to diagnose the power state of the nerf gun and motors.
 
 
-A "lazy susan" style turntable	
+A "lazy susan" style turntable allows the gun, A-frame, and pitch control motors to rotate without excessive friction.
+
+
+The plywood baseplate measures 24"x20". 
+To lower the risk of tipping or instability while in motion or firing, all the available space was used.
+
+
+The A-frame style structure made of plywood supports the gun pitch motors without shaking due to its rigidty and geometry.
+
+
+![Alt text, alt right, alt left](md_LED_png.png)
+
+Figure 5. Shows the underside electronics which links the STM32 with the pitch and yaw motors, the emergency stop, the reset button, the indicator LED's, and all gun actuation.
 
 
 
+Software Design:
 
 
+Results:
 
 
+Reccomendations:
 
-Auxillary power from the power supply and GPIO wires 
-A rotating drum 
-	
-
-
-
-The mainpage.py file sets up doxygen to output screenshots of the necessary Task Diagrams and FSM's.
