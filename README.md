@@ -38,7 +38,7 @@ We utulized the entire allotted physical space to create a stable platform rated
 The following parts list contains the major components that dictated our hardware design.
 
 
-<h1>Parts List:</h1>
+<h1>Hardware Parts List:</h1>
 
 1.	Electronically Actuated Dart Gun
 2.	Gun Magazine
@@ -104,14 +104,103 @@ Figure 5. Shows the underside electronics which links the STM32 with the pitch a
 
 
 
-
-
 <h1>Software Design:</h1>
 
+The software design philsophy focuses on simplicity and effectiveness.
+It is comprised of five main sections that interact to achieve control of the physical system.
 
-<h1>Results:</h1>
+**Software Components**
+1.  Thermal Camera
+2.  Yaw Control
+3.  Pitch Control
+4.  Gun Actuation Control
+5.  Start Button
+
+The thermal camera allows our gun to locate targets. 
+It takes a snapshot of its surrounding and then spits out a pixel array based on temperature.
+Our algorithim first filters the snapshot to set all low temeprature values to zero.
+Then, it runs through the remaining non-zero values to find the hottest point and its surrounding heat blob.
+We can infer that the heat blob is our target.
+Using the location of the heat blob and the field of view, we can extrapolate a physical 3D location of our target.
+This is then sent to our yaw and pitch controllers.
+
+![Alt text, alt right, alt left](task_diagram_thermal_camera.png)
+
+Figure 6. Shows the Thermal Camera Finite State Machine Design
+
+
+The Yaw and Pitch control rely on an encoder tick value to set the desired angles. 
+Using a proportional closed loop controller, we can reach desired theta values with negligible steady state error.
+The controllers take the location data from the thermal camera, convert this to encoder data and then move the motors.
+
+![Alt text, alt right, alt left](task_diagram_yaw_control.png)
+
+Figure 7. Shows the Yaw Control Finite State Machine
+
+![Alt text, alt right, alt left](task_diagram_pitch_control.png)
+
+Figure 8. Shows the Pitch Control Finite State Machine
+
+
+The actuation of the gun involves sending a Pin high signal to the plunger system already pre-installed on the nerf gun.
+
+![Alt text, alt right, alt left](task_diagram_fire_nerf_gun.png)
+
+Figure 9. Shows the Gun Actuation Finite State Machine
+
+
+The start button begins the startup sequence for dueling.
+
+![Alt text, alt right, alt left](task_diagram_start_button.png)
+
+Figure 10. Shows the Start Button Finite State Machine
+
+
+
+For a more detailed analysis of the software, see the documentation linked [HERE](link to pages https:// adam pages)
+
+
+
+
+<h1>Testing and Results:</h1>
+
+Due to unforseen serious health concerns, our project never had a full oppurtunity to combine all hardware and software.
+The pitch, yaw, and Estop functionality was tested and functional.
+The thermal camera image processing and distance tracking was tested and functional.
+There was not an oppurtunity to combine these seperate aspects and run the system as a fully automated turret.
+
+The Pitch, Yaw, and Estop Testing can be seen [HERE](insert youtube video link)
+
+The Thermal Camera Image Processing can be seen [HERE](insert youtube video link)
+
+As mentioned above, proportional controllers dictated the pitch and yaw movement.
+Testing different Kp values adjusted the steady state error and speed of the system.
+A Kp value of 30 proved to be sufficient for our motor control.
+
+Through trial and error, we deduced that the encoder ticks to rotation of pitch and yaw axis was....
 
 
 <h1>Reccomendations:</h1>
 
+This project requires knowledge of mechanical, electrical, and software design.
+
+**Mechanical Design:**
+
+Using a large base prevents issues associated with tipping or instability when the gun is being moved.
+Strong supports that hold the gun and pitch motors should be a priority.
+If those supports are imbalanced, wobbly, or too heavy, the motor control for both pitch and yaw can become near impossible.
+Maintaining tension on any belts, gears, or belts is critical to getting reliable movement from the motors.
+
+**Electrical Design:**
+Avoid using redudant components that can potentially fail, such as switches, LED's, and buttons.
+Confirm that the motor shield, stm32, and other precious hardware is never exposed to high voltage or put under high heat.
+Cover all loose connections, maintain good color wiring standards, connect wires with shrink tubing or wire nuts.
+Do not over engineer the interaction between the components, as simple wiring will suffice.
+Keep wires short to reduce clutter.
+
+**Software Design:**
+
+Refrain from overcomplicating the multitasking of the code.
+Focus energy and effort on the thermal camera targetting system.
+The motors, encoders, and controller are straighforward and intuitive.
 
