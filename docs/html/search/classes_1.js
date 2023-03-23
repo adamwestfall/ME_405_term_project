@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['closed_5floop_5fcontroller_0',['Closed_loop_controller',['../classclosed__loop__controller_1_1_closed__loop__controller.html',1,'closed_loop_controller']]]
+  ['baseshare_0',['BaseShare',['../classsrc_1_1task__share_1_1_base_share.html',1,'src::task_share']]]
 ];
