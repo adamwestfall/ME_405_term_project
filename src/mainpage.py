@@ -12,18 +12,36 @@
                                         Below you will find an outline ofthe software design of the ME 405 autmatic nerf gun project. <br>
                                         A Task Diagram including Thermal Camera, Yaw Control, Pitch Control, and Gun Firing Actuation is included below. <br> 
                                         Attached you will see the associated Finite State Machines. <br>
+                                        The files required to operate the automatic nerf gun are as follows. <br>
+                                        Motor Control: closed_loop_controller.py, encoder.py, motor_driver.py <br>
+                                        Camera Control: mlx_cam.py, __init__.py, calibration.py, image.py, regmap.py, utils.py<br>
+                                        Code Cooperation: cotask.py,task_share.py <br>
+                                        Documentation: mainpage.py <br>
+                                        
                                         
    @subsection abc_qwe                  Thermal Camera 
-                                        The thermal camera runs on i2C and produces a heatmap. <br>
+                                        The thermal camera runs on I2C communciation and produces a heatmap. <br>
+                                        By filtering the data based on a minimum temperature, an algorithim can easily find <br>
+                                        the hottest and larget heat blob. This represents our target. <br>
+                                        Using the field of view and length of the dueling table, a physical location can be deduced <br>
+                                        from the camera's thermal image. <br>
    
    @subsection abc_qle                  Yaw Control 
-                                        Yaw control through encoders and motors. <br>
+                                        Yaw of the system is controlled through encoders and motors. <br>
+                                        A timing belt ensures that an encoder value will produce the correct angle. <br>
+                                        A proprtional closed loop controller allows us to tune the speed of the motor response. <br>
    
    @subsection abc_qii                  Pitch Control 
-                                        Pitch control through encoders and motors. <br>
+                                        Pitch of the system is controlled through encoders and motors. <br>
+                                        A timing belt ensures that an encoder value will produce the correct angle. <br>
+                                        A proprtional closed loop controller allows us to tune the speed of the motor response. <br>
    
    @subsection abc_qpo                  Gun Actuation Control 
-                                        Gun Actuation control through encoders and motors. <br>
+                                        The gun fires nerf bullets by spinning two drums like a baseball pitching machine. <br>
+                                        When the nerf gun is powered, we can toggle its DC motors to start spinning. <br>
+                                        Once the motors are up to speed and ready to fire, we send a signal to the gun to <br>
+                                        indicate Pin high on the plunger firing sequence. Here, the plunger will push the <br>
+                                        foam dart into the firing drums. <br>
            
    @section fsm_tok     Task Diagrams and FSM's
                         <br>
@@ -47,18 +65,27 @@
                         <br>
                         
                         
-   @section fnl_www     Final Video
+   @section fnl_www     Pitch and Yaw Demonstration
                         Video Link:
                         <br>
                         \htmlonly
-                        <iframe width="560" height="315" src="https://www.youtube.com/embed/7xuR2YwOMh8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <iframe width="560" height="315" src="https://youtube.com/shorts/QEfIl4nILfw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         \endhtmlonly
                         <br>
+                        
+    @section fnl_www     Thermal Camera Demonstration
+                         Video Link:
+                         <br>
+                         \htmlonly
+                         <iframe width="560" height="315" src="https://youtube.com/shorts/f9dJt45VfJc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                         \endhtmlonly
+                         <br>
+                        
                        
     
    @author              Adam Westfall, Jason Davis, Conor Fraser
 
    @copyright           License Info
 
-   @date                February 28, 2022
+   @date                March 20, 2023
 '''
