@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.6"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ME 405 Term Project: ME 405 Term Project</title>
+<title>ME 405 Term Project Documentation: ME 405 Term Project Documentation</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">ME 405 Term Project
+   <div id="projectname">ME 405 Term Project Documentation
    </div>
   </td>
  </tr>
@@ -69,7 +69,7 @@ $(function() {
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">ME 405 Term Project </div></div>
+  <div class="headertitle"><div class="title">ME 405 Term Project Documentation </div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><h1><a class="anchor" id="tst_rpz"></a>
@@ -82,21 +82,39 @@ Software Design</h1>
  A Task Diagram including Thermal Camera, Yaw Control, Pitch Control, and Gun Firing Actuation is included below. <br  />
  Attached you will see the associated Finite State Machines. <br  />
 </p>
+<p>The files required to operate the automatic nerf gun are as follows. <br  />
+ Motor Control: closed_loop_controller.py, encoder.py, motor_driver.py <br  />
+ Camera Control: <a class="el" href="mlx__cam_8py.html" title="This file contains a wrapper that facilitates the use of a Melexis MLX90640 thermal infrared camera f...">mlx_cam.py</a>, <b>init</b>.py, calibration.py, image.py, regmap.py, utils.py<br  />
+ Code Cooperation: <a class="el" href="cotask_8py.html" title="This file contains classes to run cooperatively scheduled tasks in a multitasking system.">cotask.py</a>, <a class="el" href="task__share_8py.html" title="This file contains classes which allow tasks to share data without the risk of data corruption by int...">task_share.py</a> <br  />
+ Documentation: <a class="el" href="mainpage_8py.html" title="Mainpage for the ME 405 Automatic Nerf Gun Project.">mainpage.py</a> <br  />
+</p>
 <h2><a class="anchor" id="abc_qwe"></a>
 Thermal Camera</h2>
-<p>The thermal camera runs on i2C and produces a heatmap. <br  />
+<p>The thermal camera runs on I2C communciation and produces a heatmap. <br  />
+ By filtering the data based on a minimum temperature, an algorithim can easily find <br  />
+ the hottest and larget heat blob. This represents our target. <br  />
+ Using the field of view and length of the dueling table, a physical location can be deduced <br  />
+ from the camera's thermal image. <br  />
 </p>
 <h2><a class="anchor" id="abc_qle"></a>
 Yaw Control</h2>
-<p>Yaw control through encoders and motors. <br  />
+<p>Yaw of the system is controlled through encoders and motors. <br  />
+ A timing belt ensures that an encoder value will produce the correct angle. <br  />
+ A proprtional closed loop controller allows us to tune the speed of the motor response. <br  />
 </p>
 <h2><a class="anchor" id="abc_qii"></a>
 Pitch Control</h2>
-<p>Pitch control through encoders and motors. <br  />
+<p>Pitch of the system is controlled through encoders and motors. <br  />
+ A timing belt ensures that an encoder value will produce the correct angle. <br  />
+ A proprtional closed loop controller allows us to tune the speed of the motor response. <br  />
 </p>
 <h2><a class="anchor" id="abc_qpo"></a>
 Gun Actuation Control</h2>
-<p>Gun Actuation control through encoders and motors. <br  />
+<p>The gun fires nerf bullets by spinning two drums like a baseball pitching machine. <br  />
+ When the nerf gun is powered, we can toggle its DC motors to start spinning. <br  />
+ Once the motors are up to speed and ready to fire, we send a signal to the gun to <br  />
+ indicate Pin high on the plunger firing sequence. Here, the plunger will push the <br  />
+ foam dart into the firing drums. <br  />
 </p>
 <h1><a class="anchor" id="fsm_tok"></a>
 Task Diagrams and FSM's</h1>
@@ -132,16 +150,9 @@ Task Diagrams and FSM's</h1>
 </div>
 <p> <br  />
 </p>
-<h1><a class="anchor" id="fnl_www"></a>
-Final Video</h1>
-<p>Video Link: <br  />
-  
-                        <iframe width="560" height="315" src="https://www.youtube.com/embed/7xuR2YwOMh8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                         <br  />
-</p>
 <dl class="section author"><dt>Author</dt><dd>Adam Westfall, Jason Davis, Conor Fraser</dd></dl>
 <dl class="section copyright"><dt>Copyright</dt><dd>License Info</dd></dl>
-<dl class="section date"><dt>Date</dt><dd>February 28, 2022 </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>March 20, 2023 </dd></dl>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 <!-- start footer part -->
