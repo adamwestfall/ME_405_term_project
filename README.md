@@ -1,6 +1,6 @@
 # ME_405_term_project
 
-**Learn By Dueling**
+<h1>Learn By Dueling</h1>
 
 Authors: Jason Davis, Adam Westfall, Conor Fraser
 
@@ -17,7 +17,7 @@ The goal was to create an automatic sniper turret that would fire once and hit t
 This turret can be used to entertain kids, teens, adults, and engineers.
 
 
-<h1>**Hardware Design:**</h1>
+<h1>Hardware Design:</h1>
 
 
 ![Alt text, alt right, alt left](md_front_view_png.png)
@@ -38,7 +38,7 @@ We utulized the entire allotted physical space to create a stable platform rated
 The following parts list contains the major components that dictated our hardware design.
 
 
-**<h1>Parts List:</h1>**
+<h1>Parts List:</h1>
 1.	Electronically Actuated Dart Gun
 2.	Gun Magazine
 3.	24V DC Motor used for Yaw control
@@ -105,11 +105,12 @@ Figure 5. Shows the underside electronics which links the STM32 with the pitch a
 
 
 
-Software Design:
+<h1>Software Design:</h1>
 
 
-Results:
+<h1>Results:</h1>
 
 
-Reccomendations:
+<h1>Reccomendations:</h1>
+
 
