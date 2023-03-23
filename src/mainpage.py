@@ -12,11 +12,12 @@
                                         Below you will find an outline ofthe software design of the ME 405 autmatic nerf gun project. <br>
                                         A Task Diagram including Thermal Camera, Yaw Control, Pitch Control, and Gun Firing Actuation is included below. <br> 
                                         Attached you will see the associated Finite State Machines. <br>
+                                        
                                         The files required to operate the automatic nerf gun are as follows. <br>
-                                        Motor Control: closed_loop_controller.py, encoder.py, motor_driver.py <br>
-                                        Camera Control: mlx_cam.py, __init__.py, calibration.py, image.py, regmap.py, utils.py<br>
-                                        Code Cooperation: cotask.py,task_share.py <br>
-                                        Documentation: mainpage.py <br>
+                                        Motor Control:     closed_loop_controller.py, encoder.py, motor_driver.py <br>
+                                        Camera Control:    mlx_cam.py, __init__.py, calibration.py, image.py, regmap.py, utils.py<br>
+                                        Code Cooperation:  cotask.py, task_share.py <br>
+                                        Documentation:     mainpage.py <br>
                                         
                                         
    @subsection abc_qwe                  Thermal Camera 
@@ -64,25 +65,7 @@
                         \image html task_diagram_start_button.png
                         <br>
                         
-                        
-   @section fnl_www     Pitch and Yaw Demonstration
-                        Video Link:
-                        <br>
-                        \htmlonly
-                        <iframe width="560" height="315" src="https://youtube.com/shorts/QEfIl4nILfw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        \endhtmlonly
-                        <br>
-                        
-    @section fnl_www     Thermal Camera Demonstration
-                         Video Link:
-                         <br>
-                         \htmlonly
-                         <iframe width="560" height="315" src="https://youtube.com/shorts/f9dJt45VfJc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                         \endhtmlonly
-                         <br>
-                        
-                       
-    
+                   
    @author              Adam Westfall, Jason Davis, Conor Fraser
 
    @copyright           License Info
