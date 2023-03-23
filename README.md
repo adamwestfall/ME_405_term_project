@@ -1,11 +1,11 @@
 # ME_405_term_project
 
-Learn By Dueling
+**Learn By Dueling**
 
 Authors: Jason Davis, Adam Westfall, Conor Fraser
 
 
-Overview:
+<h1>Overview:</h1>
 
 The ME 405 Term Project consisted of altering a manually operated toy NERF dart gun into a automated heat seeking turret.
 We were tasked with implementing a targetting, aiming, and firing system that would allow our turret to eliminate an enemy before the enemy eliminated us. 
@@ -17,7 +17,7 @@ The goal was to create an automatic sniper turret that would fire once and hit t
 This turret can be used to entertain kids, teens, adults, and engineers.
 
 
-Hardware Design:
+<h1>**Hardware Design:**</h1>
 
 
 ![Alt text, alt right, alt left](md_front_view_png.png)
@@ -38,7 +38,7 @@ We utulized the entire allotted physical space to create a stable platform rated
 The following parts list contains the major components that dictated our hardware design.
 
 
-Parts List:
+**<h1>Parts List:</h1>**
 1.	Electronically Actuated Dart Gun
 2.	Gun Magazine
 3.	24V DC Motor used for Yaw control
@@ -100,6 +100,8 @@ The A-frame style structure made of plywood supports the gun pitch motors withou
 ![Alt text, alt right, alt left](md_LED_png.png)
 
 Figure 5. Shows the underside electronics which links the STM32 with the pitch and yaw motors, the emergency stop, the reset button, the indicator LED's, and all gun actuation.
+
+
 
 
 
