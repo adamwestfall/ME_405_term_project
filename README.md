@@ -179,9 +179,6 @@ As mentioned above, proportional controllers dictated the pitch and yaw movement
 Testing different Kp values adjusted the steady state error and speed of the system.
 A Kp value of 30 proved to be sufficient for our motor control.
 
-Through trial and error, we deduced that the encoder ticks to rotation of pitch and yaw axis was....
-
-
 <h1>Recommendations:</h1>
 
 This project requires knowledge of mechanical, electrical, and software design.
