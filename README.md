@@ -169,7 +169,7 @@ The pitch, yaw, and Estop functionality was tested and functional.
 The thermal camera image processing and distance tracking was tested and functional.
 There was not an oppurtunity to combine these seperate aspects and run the system as a fully automated turret.
 
-The Pitch, Yaw, and Estop Testing can be seen [HERE](https://youtube.com/shorts/QEfIl4nILfw?feature=share)
+The Pitch and Yaw Testing can be seen [HERE](https://youtube.com/shorts/QEfIl4nILfw?feature=share)
 
 Encoder Testing can be seen [HERE](https://youtube.com/shorts/12JScb-gdi4?feature=share)
 
