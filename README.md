@@ -39,6 +39,7 @@ The following parts list contains the major components that dictated our hardwar
 
 
 <h1>Parts List:</h1>
+
 1.	Electronically Actuated Dart Gun
 2.	Gun Magazine
 3.	24V DC Motor used for Yaw control
