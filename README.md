@@ -21,12 +21,15 @@ Hardware Design:
 
 
 ![Alt text, alt right, alt left](md_front_view_png.png)
+
 Figure 1. Shows the front view of the physical system.
 
 ![Alt text, alt right, alt left](md_side_view_1_png.png)
+
 Figure 2. Shows a side view of the physical system.
 
 ![Alt text, alt right, alt left](md_side_view_2_png.png)
+
 Figure 3. Shows another side view of the physical system.
 
 
@@ -60,6 +63,7 @@ The belt did not fit in the A-frame support systems so a 3D printed magazine was
 It slides into the top portion of the nerf gun and has a clip to stay secure. 
 
 ![Alt text, alt right, alt left](CAD_Gun.png)
+
 Figure 4. Shows the CAD model for the Magazine.
 
 
