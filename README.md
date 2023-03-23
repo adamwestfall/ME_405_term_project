@@ -20,13 +20,13 @@ This turret can be used to entertain kids, teens, adults, and engineers.
 Hardware Design:
 
 
-![Alt text, alt right, alt left](md_front_view.jpg)
+![Alt text, alt right, alt left](md_front_view_png.png)
 Figure 1. Shows the front view of the physical system.
 
-![Alt text, alt right, alt left](md_side_view_1.jpg)
+![Alt text, alt right, alt left](md_side_view_1_png.png)
 Figure 2. Shows a side view of the physical system.
 
-![Alt text, alt right, alt left](md_side_view_2.jpg)
+![Alt text, alt right, alt left](md_side_view_2_png.png)
 Figure 3. Shows another side view of the physical system.
 
 
